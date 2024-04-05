@@ -14,4 +14,4 @@ def is_prime(number: int) -> bool:
             return False
         index_number += 6
     return True
-print(is_prime(5))
+

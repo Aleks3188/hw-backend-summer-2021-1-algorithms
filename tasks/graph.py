@@ -1,3 +1,4 @@
+from collections import deque
 from typing import TypeVar, Generic
 
 __all__ = ("Node", "Graph")
@@ -31,8 +32,33 @@ class Graph:
     def __init__(self, root: Node) -> None:
         self._root = root
 
-    def dfs(self) -> list[Node]:
-        raise NotImplementedError
+    def dfs(self) -> list[Node[T]]:
+        visited = set()
+        result = []
+
+        def dfs_visit(node: Node[T]) -> None:
+            if node in visited:
+                return
+            visited.add(node)
+            result.append(node)
+            for neighbor in node.outbound:
+                dfs_visit(neighbor)
+
+        dfs_visit(self._root)
+        return result
 
     def bfs(self) -> list[Node]:
-        raise NotImplementedError
+        visited = set()
+        result = []
+        queue = deque([self._root])
+
+        while queue:
+            node = queue.popleft()
+            if node in visited:
+                continue
+            visited.add(node)
+            result.append(node)
+            for neighbor in node.outbound:
+                queue.append(neighbor)
+
+        return result
